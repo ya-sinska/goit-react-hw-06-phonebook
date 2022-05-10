@@ -23,3 +23,4 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.GH_DOCS }}
           branch: gh-pages
           folder: build
+          CLEAN: true
