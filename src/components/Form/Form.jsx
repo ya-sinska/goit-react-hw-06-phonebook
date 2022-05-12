@@ -1,21 +1,33 @@
 import { Formik} from 'formik';
 import * as yup from 'yup';
-import PropTypes from 'prop-types';
+import {  useDispatch } from 'react-redux'
+import { addContactsItem } from "redux/contactsItemSlice";
+import { nanoid } from 'nanoid'
 import {ContactForm, InputField, Label, Error, BtnSubmitForm } from './Form.styled'
+// Validation
+
 const phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 const nameRegExp = /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/;
-
 const schema = yup.object().shape({
   name: yup.string().matches(nameRegExp, 'Name is not valid').required(),
   number: yup.string().matches(phoneRegExp, 'Phone number is not valid').max(12).required(),
 })
+// Initual values for Formik
 const initialValues = {
     name: '',
     number: '+38',
 };
-export const Forma = ({onSubmit}) => {
+// Component Forma
+
+export const Forma = () => {
+    const dispatch = useDispatch();
     const handleSubmit = (values, { resetForm }) => {
-    onSubmit(values);
+        const items = {
+            id:nanoid(),
+            name: values.name ,
+            number: values.number,
+    } 
+    dispatch(addContactsItem(items));
     resetForm();
   };
     return (
@@ -45,8 +57,4 @@ export const Forma = ({onSubmit}) => {
             </ContactForm >
       </Formik>
     )
-}
-
-Forma.propTypes = {
-    onSubmit: PropTypes.func,
 }

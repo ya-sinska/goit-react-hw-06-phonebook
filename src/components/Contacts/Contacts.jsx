@@ -1,26 +1,26 @@
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux'
+import { getFilterValue } from 'redux/contactsFilterSlice';
 import { ContactList, TextNotFind } from './Contacts.styled'
 import { ContactItem } from '../ContactItem/ContactItem';
-export const Contacts = ({ contacts, onDeleteContact }) => {
+import { getItemsValue } from 'redux/contactsItemSlice';
+export const Contacts = () => {
+    const items = useSelector(getItemsValue);
+    const filter = useSelector(getFilterValue);
+    const filteredContacts = filter ? items.filter(item =>
+        item.name.toLowerCase().includes(filter.toLowerCase())) : items;
+    
     return (
         <div>
-            {contacts.length > 0 ?
+            {filteredContacts.length > 0 ?
                 (<ContactList>
-                {contacts.map(({ id, name, number }) => 
+                {filteredContacts.map(({ id, name, number }) => 
                     <ContactItem
                         key={id}
                         name={name}
                         number={number}
-                        onDelete={() => { onDeleteContact(id) }} />
+                        id={id}
+                    />
                     )}</ContactList>) : (<TextNotFind>There is no contacts</TextNotFind >)}
         </div>
     )
-}
-Contacts.propTypes = {
-    onDeleteContact: PropTypes.func,
-    contacts:PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    number: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
-  }),),
 }
