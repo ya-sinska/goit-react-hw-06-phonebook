@@ -3,6 +3,7 @@ import { getFilterValue } from 'redux/contactsFilterSlice';
 import { ContactList, TextNotFind } from './Contacts.styled'
 import { ContactItem } from '../ContactItem/ContactItem';
 import { getItemsValue } from 'redux/contactsItemSlice';
+
 export const Contacts = () => {
     const items = useSelector(getItemsValue);
     const filter = useSelector(getFilterValue);

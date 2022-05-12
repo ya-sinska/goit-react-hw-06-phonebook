@@ -1,5 +1,4 @@
-import { Formik} from 'formik';
-import * as yup from 'yup';
+import { useForm } from "react-hook-form";
 import {  useDispatch } from 'react-redux'
 import { addContactsItem } from "redux/contactsItemSlice";
 import { nanoid } from 'nanoid'
@@ -8,53 +7,69 @@ import {ContactForm, InputField, Label, Error, BtnSubmitForm } from './Form.styl
 
 const phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 const nameRegExp = /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/;
-const schema = yup.object().shape({
-  name: yup.string().matches(nameRegExp, 'Name is not valid').required(),
-  number: yup.string().matches(phoneRegExp, 'Phone number is not valid').max(12).required(),
-})
-// Initual values for Formik
-const initialValues = {
-    name: '',
-    number: '+38',
-};
+
 // Component Forma
 
 export const Forma = () => {
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        defaultValues: {
+            name:'',
+            number:'+380'
+        }
+    });
     const dispatch = useDispatch();
-    const handleSubmit = (values, { resetForm }) => {
+
+    const onSubmit = (values) => {
         const items = {
             id:nanoid(),
             name: values.name ,
             number: values.number,
     } 
     dispatch(addContactsItem(items));
-    resetForm();
   };
     return (
-        <Formik
-        initialValues={initialValues}
-        validationSchema={schema}
-        onSubmit={handleSubmit}>
-            <ContactForm autoComplete='off'>
-                <Label htmlFor='name'> Name </Label>             
-                <InputField
-                    id="name"
-                    type="text"
-                    name="name"
-                    placeholder="Surname Name"
-                    />
-                <Error name="name" component="div"/>
-                
-                <Label  htmlFor='number'> Number </Label >              
-                <InputField
-                    id="number"
-                    type="tel"
-                    name="number"
-                    />
-                <Error name="number" component="div"/>
-                
-                <BtnSubmitForm type="submit">Add contact</BtnSubmitForm>
-            </ContactForm >
-      </Formik>
+        <ContactForm
+            onSubmit={handleSubmit(onSubmit)}
+            autoComplete='off'
+        >
+            <Label htmlFor='name'> Name </Label>             
+            <InputField
+                id="name"
+                type="text"
+                {...register("name", {
+                    required: "This is required",
+                    minLength: {
+                        value: 5,
+                        message: "Min length is 5 symbols",
+                    },
+                    pattern: {
+                        value: nameRegExp,
+                        message: "Use only text"
+                    }
+                })} 
+                placeholder="Surname Name"
+            />
+            {errors.name&&<Error>{errors.name?.message }</Error> } 
+            <Label  htmlFor='number'> Number </Label >              
+            <InputField
+                id="number"
+                type="tel"
+                {...register("number", {
+                    required: "This is required",
+                    maxLength: {
+                        value: 12,
+                        message: "Max length is 12 symbols"
+                    },
+                    pattern: {
+                        value: phoneRegExp,
+                        message: "Use only numbers"
+                    }
+                })}
+                placeholder="+38(000)000-00-00"
+            />
+            {errors.number&&<Error>{errors.number?.message }</Error>  }     
+            <BtnSubmitForm type="submit">Add contact</BtnSubmitForm>
+         
+      </ContactForm>
     )
 }

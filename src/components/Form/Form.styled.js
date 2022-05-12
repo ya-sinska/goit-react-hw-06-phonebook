@@ -1,13 +1,12 @@
 import styled from "@emotion/styled";
-import { Form, Field, ErrorMessage } from "formik";
-export const ContactForm = styled(Form)`
+export const ContactForm = styled.form`
 border: 2px solid tomato;
 box-shadow: 0px 0px 5px 4px rgba(217,58,58,0.75);
 max-width:500px;
 padding: 30px 20px;
 text-align: center;
 `
-export const InputField = styled(Field)`
+export const InputField = styled.input`
     &:not(:last-child){
     margin-bottom:10px;
    }
@@ -29,8 +28,8 @@ export const InputField = styled(Field)`
     font-weight:900;
    `
 
-export const Error = styled(ErrorMessage)`
-   margin-bottom:30px;
+export const Error = styled.p`
+   margin:0;
    color: tomato;
    font-size:16px;
    text-align: center; 
