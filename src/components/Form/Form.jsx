@@ -3,7 +3,7 @@ import {  useDispatch } from 'react-redux'
 import { addContactsItem } from "redux/contactsItemSlice";
 import { nanoid } from 'nanoid'
 import {ContactForm, InputField, Label, Error, BtnSubmitForm } from './Form.styled'
-// Validation
+// Patterns
 
 const phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 const nameRegExp = /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/;
@@ -68,8 +68,7 @@ export const Forma = () => {
                 placeholder="+38(000)000-00-00"
             />
             {errors.number&&<Error>{errors.number?.message }</Error>  }     
-            <BtnSubmitForm type="submit">Add contact</BtnSubmitForm>
-         
+            <BtnSubmitForm type="submit">Add contact</BtnSubmitForm>      
       </ContactForm>
     )
 }
