@@ -15,12 +15,6 @@ export const contactsItemSlice = createSlice({
     initialState,
     reducers: {
         addContactsItem: (state, action) => {
-            const isIncludesName = state.value.find(
-                item => item.name.toLowerCase() === action.payload.name.toLowerCase()
-            );
-            if (isIncludesName) {
-                return alert(`${action.payload.name} is already is contacts`);
-            }
             state.value.push(action.payload)
         },
         deleteContactsItem: (state, action) => {
