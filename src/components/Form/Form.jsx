@@ -1,32 +1,14 @@
-import { useForm } from "react-hook-form";
-import {  useDispatch } from 'react-redux'
-import { addContactsItem } from "redux/contactsItemSlice";
-import { nanoid } from 'nanoid'
-import {ContactForm, InputField, Label, Error, BtnSubmitForm } from './Form.styled'
-// Patterns
+import { useFormValues } from 'hooks/useFormValues';
+import { ContactForm, InputField, Label, Error, BtnSubmitForm } from './Form.styled'
 
+// Patterns
 const phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 const nameRegExp = /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/;
 
 // Component Forma
-
 export const Forma = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm({
-        defaultValues: {
-            name:'',
-            number:'+380'
-        }
-    });
-    const dispatch = useDispatch();
+    const { register, handleSubmit, errors, onSubmit } = useFormValues();
 
-    const onSubmit = (values) => {
-        const items = {
-            id:nanoid(),
-            name: values.name ,
-            number: values.number,
-    } 
-    dispatch(addContactsItem(items));
-  };
     return (
         <ContactForm
             onSubmit={handleSubmit(onSubmit)}

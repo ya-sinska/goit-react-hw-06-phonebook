@@ -1,15 +1,10 @@
-import { useDispatch } from 'react-redux'
-import { addFilter } from "redux/contactsFilterSlice";
 import { Label, InputField } from './Filter.styled'
+import { useChange } from 'hooks/useChange';
 export const Filter = () => {
-    const dispatch = useDispatch();
-    const handleChange = (e) => {
-        const inputValue = e.currentTarget.value;
-        dispatch(addFilter(inputValue))
-    };
+    const change = useChange();
  return (
 <>
     <Label htmlFor="filter">Find contacts by name </Label>
-    <InputField id="filter" type="text" name="filter" onChange={handleChange}/>
+    <InputField id="filter" type="text" name="filter" onChange={change}/>
 </>    
 )}
